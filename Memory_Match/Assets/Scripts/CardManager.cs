@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
@@ -35,37 +36,43 @@ public class CardManager : MonoBehaviour
     public int matchesBeforeShuffle = 2;
     private int matchesMade = 0; // Keep track of the number of matches made
 
+    public GameObject winPanel;
+    public TextMeshProUGUI winText; 
+
     // Start is called before the first frame update
     private void Awake()
     {
-        instance = this; 
+        instance = this;
+        winPanel.SetActive(false);
     }
     void Start()
     {
         FillPlayField();
+       
     }
 
-    void Update()
-    {
-        // Check if the condition for shuffling is met
-        if (matchesMade % matchesBeforeShuffle == 0 && matchesMade > 0)
-        {
-            // Trigger the shuffle action
-            ShuffleGrid();
-        }
-    }
-    void ShuffleGrid()
-    {
-        for (int i = 0; i < buttonList.Count; i++)
-        {
-            int randomIndex = Random.Range(i, buttonList.Count);
-            GameObject temp = buttonList[randomIndex];
-            buttonList[randomIndex] = buttonList[i];
-            buttonList[i] = temp;
-            // Update the positions of the shuffled cards
-            buttonList[i].transform.position = CalculatePosition(i); // Implement this method to calculate card positions
-        }
-    }
+
+    ////void Update()
+    ////{
+    ////    // Check if the condition for shuffling is met
+    ////    if (matchesMade % matchesBeforeShuffle == 0 && matchesMade > 0)
+    ////    {
+    ////        // Trigger the shuffle action
+    ////        ShuffleGrid();
+    ////    }
+    ////}
+    ////void ShuffleGrid()
+    ////{
+    ////    for (int i = 0; i < buttonList.Count; i++)
+    ////    {
+    ////        int randomIndex = Random.Range(i, buttonList.Count);
+    ////        GameObject temp = buttonList[randomIndex];
+    ////        buttonList[randomIndex] = buttonList[i];
+    ////        buttonList[i] = temp;
+    ////        // Update the positions of the shuffled cards
+    ////        buttonList[i].transform.position = CalculatePosition(i); // Implement this method to calculate card positions
+    ////    }
+    ////}
     public void OnMatchMade()
     {
         matchesMade++;
@@ -238,16 +245,22 @@ public class CardManager : MonoBehaviour
             if (ScoreManager.instance.currentScoreOne> ScoreManager.instance.currentScoreTwo)
             {
                 //show ui
+                winPanel.SetActive(true);
+                winText.text = "Player One Won";
                 Debug.Log("play one won ");
             }
             else if(ScoreManager.instance.currentScoreOne < ScoreManager.instance.currentScoreTwo)
             {
                 //show ui
+                winPanel.SetActive(true);
+                winText.text = "Player Two Won";
                 Debug.Log("play two won ");
             }
             else if (ScoreManager.instance.currentScoreOne == ScoreManager.instance.currentScoreTwo)
             {
                 //show ui
+                winPanel.SetActive(true);
+                winText.text = "Its a tie !!";
                 Debug.Log("tie ");
             }
 
